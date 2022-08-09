@@ -3,6 +3,7 @@ import { AppBar, IconButton, Toolbar, Drawer, Button, Avatar, useMediaQuery } fr
 import { Menu, AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
+import { Sidebar } from '..';
 
 import useStyles from './styles';
 
@@ -22,7 +23,7 @@ const NavBar = () => {
 							color="inherit" 
 							edge="start" 
 							style={{outline:'none'}}
-							onClick={() => {}}
+							onClick={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
 							className={classes.menuButton}>
 							<Menu />
 						</IconButton>
@@ -63,6 +64,7 @@ const NavBar = () => {
 							variant="temporary"
 							anchor="right"
 							open={mobileOpen}
+							onClose={() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)}
 							className={classes.drawerBackground}
 							classes={{paper:classes.drawerPaper}}
 							ModalProps={{keepMounted: true}}
@@ -70,10 +72,8 @@ const NavBar = () => {
 							<Sidebar setMobileOpen={setMobileOpen}/>
 						</Drawer>
 					) : (
-						<Drawer
-						
-						>
-
+						<Drawer classes={{paper: classes.drawerPaper}} variant="permanent" open>
+							<Sidebar setMobileOpen={setMobileOpen}/>
 						</Drawer>
 					)}
 				</nav>
