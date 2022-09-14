@@ -32,5 +32,18 @@ export default makeStyles((theme) => ({
 		height: '8em',
 		objectFit: 'cover',
 		borderRadius: '10px'
+	},
+	modal: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	video: {
+		width: '50%',
+		height: '50%',
+		[theme.breakpoints.down('sm')]: {
+			width: '90%',
+			height: '90%'
+		}
 	}
 }));

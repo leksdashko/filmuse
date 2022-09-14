@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Typography, Button, ButtonGroup, Grid, Box, CircularProgress, useMediaQuery, Rating } from '@mui/material';
 import { Movie as MovieIcon, Theaters, Language, PlusOne, Favorite, FavoriteBorderOurlined, Remove, ArrowBack } from '@mui/icons-material';
 import { Link, useParams } from 'react-router-dom';
@@ -12,6 +12,7 @@ const MovieInformation = () => {
 	const {id} = useParams();
 	const {data, isFetching, error} = useGetMovieQuery(id);
 	const classes = useStyles();
+	const [open, setOpen] = useState(false);
 
 	const {data:recomendations, isFetching: isRecomendationsFetching} = useGetRecomendationsQuery({list:'recommendations', movie_id: id});
 
@@ -65,14 +66,22 @@ const MovieInformation = () => {
 					Top Cast
 				</Typography>
 				<Grid item container spacing={2}>
-					{data && data.credits?.cast?.map((character, i) => (
+					{data && data.credits?.cast?.slice(0,6).map((character, i) => (
 						character.profile_path && (
 							<Grid key={i} item xs={4} md={2} component={Link} to={`/actors/${character.id}`} style={{textDecoration: 'none'}}>
 								<img className={classes.castImage} src={`${process.env.REACT_APP_TMDB_BASE_POSTER_URL}/${character.profile_path}`} alt={character.name} />
 								<Typography color='textPrimary'>{character.name}</Typography>
 							</Grid>
-						))).slice(0,6)}
+						)))}
 				</Grid>
+			</Grid>
+
+			<Grid item container style={{marginTop: '2rem'}}>
+				<div>
+					<Grid>
+						<Button onClick={() => setOpen(true)}>Trailer</Button>
+					</Grid>
+				</div>
 			</Grid>
 
 			{recomendations && (
@@ -84,6 +93,23 @@ const MovieInformation = () => {
 			</Box>
 			)}
 
+			{data?.videos?.results?.length > 0 && (
+				<Modal 
+					closeAfterTransition
+					className={classes.modal} 
+					open={open}
+					onClose={() => setOpen(false)}
+				>
+					<iframe 
+						autoPlay
+						className={classes.video}
+						frameBorder="0"
+						title="Trailer"
+						src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+						allow="autoplay"
+					/>
+				</Modal>
+			)}
 		</Grid>
 	);
 };
