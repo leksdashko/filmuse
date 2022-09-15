@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Typography, Button, ButtonGroup, Grid, Box, CircularProgress, useMediaQuery, Rating } from '@mui/material';
 import { Movie as MovieIcon, Theaters, Language, PlusOne, Favorite, FavoriteBorderOurlined, Remove, ArrowBack } from '@mui/icons-material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { MovieList } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetMovieQuery, useGetRecomendationsQuery } from '../../services/TMDB';
@@ -13,6 +13,7 @@ const MovieInformation = () => {
 	const {data, isFetching, error} = useGetMovieQuery(id);
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
+	const history = useHistory();
 
 	const {data:recomendations, isFetching: isRecomendationsFetching} = useGetRecomendationsQuery({list:'recommendations', movie_id: id});
 
@@ -38,7 +39,7 @@ const MovieInformation = () => {
 				<img 
 					className={classes.poster}
 					src={`${process.env.REACT_APP_TMDB_BASE_POSTER_URL}${data?.poster_path}`}
-					alt={data?.title}
+					alt={data?.name}
 				/>
 			</Grid>
 			<Grid item container direction="column" lg={7}>
@@ -80,6 +81,7 @@ const MovieInformation = () => {
 				<div>
 					<Grid>
 						<Button onClick={() => setOpen(true)}>Trailer</Button>
+						<Button onClick={() => history.goBack()}>Go Back</Button>
 					</Grid>
 				</div>
 			</Grid>
