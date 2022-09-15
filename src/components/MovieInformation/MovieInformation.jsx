@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Typography, Button, ButtonGroup, Grid, Box, CircularProgress, useMediaQuery, Rating } from '@mui/material';
-import { Movie as MovieIcon, Theaters, Language, PlusOne, Favorite, FavoriteBorderOurlined, Remove, ArrowBack } from '@mui/icons-material';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { MovieList } from '..';
-import { useDispatch, useSelector } from 'react-redux';
 import { useGetMovieQuery, useGetRecomendationsQuery } from '../../services/TMDB';
 import axios from 'axios';
 import useStyles from './styles';

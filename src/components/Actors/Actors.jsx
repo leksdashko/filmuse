@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Typography, Button, Grid, Box, CircularProgress } from '@mui/material';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { MovieList } from '..';
+import { MovieList, Pagination } from '..';
 import { useGetActorQuery, useGetMoviesByActorIdQuery } from '../../services/TMDB';
 import useStyles from './styles';
 
@@ -10,8 +10,9 @@ const Actors = () => {
 	const {data, isFetching, error} = useGetActorQuery(id);
 	const classes = useStyles();
 	const history = useHistory();
+	const [page, setPage] = useState(1);
 
-	const {data:movieList} = useGetMoviesByActorIdQuery({actor_id: id, page: 1});
+	const {data:movieList} = useGetMoviesByActorIdQuery({actor_id: id, page});
 
 	if(isFetching){
 		return (
@@ -65,6 +66,7 @@ const Actors = () => {
 					Movies
 				</Typography>
 				<MovieList movies={movieList} numberOfMovies={12} />
+				<Pagination currentPage={page} setPage={setPage} totalPages={movieList.total_pages} />
 			</Box>
 			)}
 		</Grid>
